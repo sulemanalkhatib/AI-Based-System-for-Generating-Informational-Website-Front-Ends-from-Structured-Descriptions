@@ -34,25 +34,34 @@ file's revision ticks up in the Code tab.
 
 ## Requirements
 
-- Python 3.12+ (tested on 3.14)
-- Node.js 18+ (tested on 22)
-- An OpenRouter-compatible API key in `backend/.env` (or the old
-  `website-generator/.env` — it is picked up automatically):
-  `OPENROUTER_API_KEY=sk-...`
+- **Python 3.12+** on PATH (tested on 3.14) — the only hard requirement.
+- An API key for any OpenAI-compatible provider (e.g. OpenRouter). You enter it
+  in the app's **Settings** on first run — no file editing needed.
+- Node.js 18+ is **optional** — the built UI (`frontend/dist`) ships with the
+  repo, so you only need Node if you want to modify and rebuild the frontend.
 
-## Run it
+## Run it (quick start)
 
-**Double-click `start.bat`** — it launches the whole app (one process) and
-opens http://localhost:8000. Use **`start-mock.bat`** for free demo mode: every
-agent returns canned data with realistic delays — perfect for rehearsing
-without spending tokens (chat anything, then say `go`).
+1. **Double-click `start.bat`.** On the first run it automatically installs the
+   Python dependencies (and rebuilds the UI if needed), then starts the app and
+   opens http://localhost:8000. Later runs skip straight to launching.
+2. In the app, click **Settings** (bottom-left), enter your provider's **Base
+   URL** and **API key**, and press **Save**. (Leave Base URL blank to use the
+   default `https://openrouter.ai/api/v1`.) Settings are stored locally and
+   applied immediately.
+3. Start a **New website**, describe your business, and type `go` to build.
 
-First-time setup only:
+Prefer a free offline rehearsal? Double-click **`start-mock.bat`** — every agent
+returns canned data (no API key needed); chat anything, then type `go`.
 
-```powershell
-cd backend;  pip install -r requirements.txt
-cd frontend; npm install; npm run build
-```
+> Advanced: instead of Settings you can put `OPENROUTER_API_KEY=...` (and
+> optionally `OPENROUTER_BASE_URL=...`) in `backend/.env` — see
+> `backend/.env.example`.
+
+### Development mode (hot reload)
+
+Terminal 1: `cd backend; python -m uvicorn app:app --port 8000 --reload`
+Terminal 2: `cd frontend; npm run dev` → http://localhost:5173 (proxies /api).
 
 ### Development mode (hot reload)
 
