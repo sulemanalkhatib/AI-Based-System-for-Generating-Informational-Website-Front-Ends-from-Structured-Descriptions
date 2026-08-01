@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+backend/data/
+
+# Node
+frontend/node_modules/
+# NOTE: frontend/dist IS committed so the app runs with only Python installed
+# (start.bat rebuilds it automatically if it is ever missing and Node is present).
+
+# Secrets
+.env
+backend/.env
+
+# IDE / editor tooling
+.vs/
+.vscode/
+.idea/

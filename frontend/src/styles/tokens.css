@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/* Design tokens — dark-first, single terracotta accent, elevation via surface
+   color (L0 → L3), never shadows. The accent var is overridden at runtime from
+   Settings. */
+@theme {
+  --color-canvas: #0d0d0d;
+  --color-surface-1: #141414;
+  --color-surface-2: #1a1a1a;
+  --color-surface-3: #212121;
+  --color-inset: #0a0a0a;
+
+  --color-ink: #ededed;
+  --color-ink-dim: #a0a0a0;
+  --color-ink-mute: #6b6b6b;
+
+  --color-edge: rgba(255, 255, 255, 0.06);
+  --color-edge-2: rgba(255, 255, 255, 0.1);
+  --color-edge-3: rgba(255, 255, 255, 0.16);
+
+  --color-accent: #cc785c;
+  --color-accent-hover: #d98a6f;
+  --color-accent-tint: rgba(204, 120, 92, 0.12);
+
+  --color-ok: #5db872;
+  --color-warn: #d4a017;
+  --color-err: #c64545;
+
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle dark scrollbars everywhere */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2e2e2e transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #2e2e2e;
+  border-radius: 4px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Keyboard focus — visible, accent-colored, never removed */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+/* Text fields signal focus with their own border/ring, so suppress the extra
+   outline box (otherwise it stacks on top of the composer's rounded border). */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+
+/* Running agent card — pulsing accent ring */
+@keyframes pulse-ring {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px var(--color-accent);
+  }
+  50% {
+    box-shadow: 0 0 0 3px var(--color-accent-tint), 0 0 0 1px var(--color-accent);
+  }
+}
+.agent-running {
+  animation: pulse-ring 1.6s ease-in-out infinite;
+}
+
+/* Streaming caret at the end of in-flight assistant text */
+@keyframes caret-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+.stream-caret::after {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 15px;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--color-accent);
+  animation: caret-blink 0.9s step-end infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-running,
+  .stream-caret::after,
+  .spin {
+    animation: none;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
